@@ -38,6 +38,8 @@
 		"vitest": "^3.2.3"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^2.50.0"
+		"@supabase/supabase-js": "^2.50.0",
+		"svelte-5-french-toast": "^2.0.4",
+		"svelte-hot-french-toast": "^2.0.0"
 	}
 }

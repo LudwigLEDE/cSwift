@@ -1,22 +1,18 @@
 <script lang="ts">
-  import { signUp } from '$lib/supabase';
+  import { sendResetEmail } from '$lib/supabase';
   import toast from 'svelte-hot-french-toast';
-  let email = '', password = '';
+  let email = '';
 
   async function handleSubmit() {
-  const { data, error } = await signUp(email, password);
-  if (error) {
-    console.error('Signup error:', error);    
-    toast.error(error.message);               
-    return;
+    const { data, error } = await sendResetEmail(email);
+    if (error) return toast.error(error.message);
+    toast.success('Reset link sent—check your inbox!');
   }
-  toast.success('Check your email for a confirmation link!');
-}
 </script>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-50">
   <div class="max-w-md w-full bg-white p-8 rounded shadow">
-    <h2 class="text-center text-2xl font-bold mb-6">Sign Up</h2>
+    <h2 class="text-center text-2xl font-bold mb-6">Forgot Password</h2>
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-4">
       <input
@@ -26,24 +22,17 @@
         placeholder="Email"
         class="w-full px-3 py-2 border rounded"
       />
-      <input
-        type="password"
-        bind:value={password}
-        required
-        placeholder="Password"
-        class="w-full px-3 py-2 border rounded"
-      />
       <button
         type="submit"
-        class="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        class="w-full py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
       >
-        Create Account
+        Send Reset Link
       </button>
     </form>
 
     <div class="mt-4 text-center">
       <a href="/login" class="text-sm text-indigo-600 hover:underline">
-        Already have an account? Log In
+        Back to Log In
       </a>
     </div>
   </div>

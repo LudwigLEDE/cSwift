@@ -1,0 +1,9 @@
+/* paste the contents of:
+   https://unpkg.com/svelte-french-toast@1.2.0/dist/svelte-french-toast.css
+   (or your fork’s equivalent) */
+.Toastify__toast-container {
+	position: fixed;
+	z-index: 9999;
+	/* …the rest of the CSS… */
+}
+/* etc */
