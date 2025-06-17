@@ -39,7 +39,9 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^2.50.0",
+		"lightweight-charts": "^5.0.7",
 		"svelte-5-french-toast": "^2.0.4",
-		"svelte-hot-french-toast": "^2.0.0"
+		"svelte-hot-french-toast": "^2.0.0",
+		"technicalindicators": "^3.1.0"
 	}
 }
