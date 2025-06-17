@@ -1,7 +1,8 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
-    import { ChartCandlestick } from 'lucide-svelte';
+    import { ChartCandlestick, ChevronDown } from 'lucide-svelte';
+	import Footer from '../Footer.svelte';
 
 
   const sectionHeight = 1000;
@@ -49,130 +50,244 @@
     };
   });
 
-  // Sample popular items data
-  const popular = [
-    { icon: '₿', name: 'Bitcoin', price: '$103,659.70', change: '-3.95%' },
-    { icon: 'Ξ', name: 'Ethereum', price: '$2,468.86', change: '-6.52%' },
-    { icon: '🟨', name: 'BNB', price: '$653.83', change: '-2.44%' },
-    { icon: '❌', name: 'XRP', price: '$2.15', change: '-7.40%' }
+  // Popular items data
+  const groupedPopular = [
+  [ // Crypto
+    { icon: '₿', name: 'Bitcoin', ticker: 'BTC', type: 'Crypto', price: '$103,750.42', change: '-3.16%' },
+    { icon: 'Ξ', name: 'Ethereum', ticker: 'ETH', type: 'Crypto', price: '$2,480.37', change: '-5.98%' },
+    { icon: '🟨', name: 'Binance Coin', ticker: 'BNB', type: 'Crypto', price: '$656.12', change: '-2.22%' },
+    { icon: '❌', name: 'XRP', ticker: 'XRP', type: 'Crypto', price: '$2.18', change: '-6.80%' },
+    { icon: '🌞', name: 'Solana', ticker: 'SOL', type: 'Crypto', price: '$147.05', change: '-6.60%' },
+  ],
+  [ // Stocks
+    { icon: '🍎', name: 'Apple Inc.', ticker: 'AAPL', type: 'Stock', price: '$172.30', change: '+0.45%' },
+    { icon: '🟦', name: 'Microsoft', ticker: 'MSFT', type: 'Stock', price: '$310.85', change: '+0.30%' },
+    { icon: '🚗', name: 'Tesla', ticker: 'TSLA', type: 'Stock', price: '$720.50', change: '-1.25%' },
+    { icon: '🛒', name: 'Amazon', ticker: 'AMZN', type: 'Stock', price: '$3,425.15', change: '+0.10%' },
+    { icon: '🔍', name: 'Alphabet', ticker: 'GOOGL', type: 'Stock', price: '$2,750.80', change: '+0.75%' },
+  ],
+  [ // Commodities
+    { icon: '📈', name: 'Gold Futures', ticker: 'GC=F', type: 'Commodity', price: '$1,934.20', change: '-0.75%' },
+    { icon: '⚪', name: 'Silver Futures', ticker: 'SI=F', type: 'Commodity', price: '$24.30', change: '-1.10%' },
+    { icon: '🛢️', name: 'Crude Oil', ticker: 'CL=F', type: 'Commodity', price: '$75.40', change: '+0.50%' },
+    { icon: '🔥', name: 'Natural Gas', ticker: 'NG=F', type: 'Commodity', price: '$3.25', change: '-2.00%' },
+    { icon: '🥇', name: 'Copper', ticker: 'HG=F', type: 'Commodity', price: '$4.15', change: '+1.25%' },
+  ],
+  [ // Forex
+    { icon: '💵', name: 'EUR/USD', ticker: 'EURUSD', type: 'Forex', price: '1.0865', change: '+0.12%' },
+    { icon: '🇬🇧', name: 'GBP/USD', ticker: 'GBPUSD', type: 'Forex', price: '1.2680', change: '-0.05%' },
+    { icon: '💴', name: 'USD/JPY', ticker: 'USDJPY', type: 'Forex', price: '110.75', change: '+0.20%' },
+    { icon: '🇦🇺', name: 'AUD/USD', ticker: 'AUDUSD', type: 'Forex', price: '0.7205', change: '-0.30%' },
+    { icon: '🇨🇦', name: 'USD/CAD', ticker: 'USDCAD', type: 'Forex', price: '1.2600', change: '+0.15%' },
+  ]
+];
+
+let faqs = [
+    {
+      title: "Why is the sky blue?",
+      content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+        laboriosam neque reprehenderit saepe eius dolorum vel consequuntur
+        perspiciatis ad vero.`,
+      open: true
+    },
+    {
+      title: "Why did the chicken cross the road?",
+      content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+        laboriosam neque reprehenderit saepe eius dolorum vel consequuntur
+        perspiciatis ad vero.`
+    },
+    {
+      title: "How many licks does it take to get to the center of a tootsie pop?",
+      content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+        laboriosam neque reprehenderit saepe eius dolorum vel consequuntur
+        perspiciatis ad vero.`
+    },
+    {
+      title: "Where's Waldo?",
+      content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+        laboriosam neque reprehenderit saepe eius dolorum vel consequuntur
+        perspiciatis ad vero.`
+    }
   ];
+
 </script>
 
 <!-- Hero Section -->
-<section style="height: calc({sectionHeight}px + 100vh)" class="relative w-full bg-black text-white overflow-hidden">
-  <div
-  class="sticky top-0 h-screen w-full flex flex-col lg:flex-row items-center justify-center px-20 py-16 bg-background"
->
-  <!-- Left panel -->
-  <div class="flex-1 text-center lg:text-left">
-    <div class="text-secondary-light text-sm font-semibold mb-2 flex items-center justify-center lg:justify-start space-x-2">
-      <ChartCandlestick class="h-5 w-5" />
-      <span>5,000,000+ Traders Educated</span>
-    </div>
-
-    <h1 class="text-5xl font-extrabold mb-2 leading-tight">
-      LEARN TO <span class="text-secondary">TRADE</span> WITH <span class="bg-gradient-to-r from-primary-dar to-primary-light
-             bg-clip-text text-transparent">cSwift</span>
-    </h1>
-
-    <p class="text-gray-300 text-lg max-w-xl mb-6">
-      Hands-on simulations, live market data, and step-by-step tutorials to make you a confident trader—without risking a dime.
-    </p>
-
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4 justify-center lg:justify-start">
-<a
-  href="/signup"
-  class="group relative inline-block overflow-hidden rounded-md border border-secondary bg-secondary"
->
-  <!-- First copy: sits on top, slides left on hover -->
-  <span
-    class="relative z-10 inline-block px-6 py-3 text-white font-semibold transition-transform duration-300 group-hover:-translate-x-full"
-  >
-    Get Started Free
-  </span>
-
-  <!-- Second copy: sits underneath, starts off‐screen left, slides in on hover -->
-  <span
-    class="absolute inset-0 flex items-center justify-center text-white font-semibold bg-secondary-dark transform -translate-x-full transition-transform duration-300 group-hover:translate-x-0"
-  >
-    Signup
-  </span>
-</a>
-
-      <div class="text-sm text-gray-400 text-center sm:text-left">
-        ⭐ Rated 4.9/5 on TrustLearn<br />Loved by 500K+ students
+<section class="relative w-full h-screen bg-black text-white overflow-hidden">
+  <div class="sticky top-0 h-screen w-full flex flex-col lg:flex-row items-center justify-between px-8 py-16 bg-background">
+    <!-- Left panel -->
+    <div class="flex-1 text-center lg:text-left space-y-4">
+      <div class="flex items-center justify-center lg:justify-start space-x-2 text-secondary-light text-sm font-semibold">
+        <ChartCandlestick class="h-5 w-5" />
+        <span>5,000,000+ Traders Educated</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
+        LEARN TO <span class="text-secondary">TRADE</span> WITH
+        <span class="bg-gradient-to-r from-primary-dar to-primary-light
+            bg-clip-text text-transparent">
+            cSwift
+        </span>
+      </h1>
+      <p class="text-gray-300 text-base sm:text-lg max-w-lg">
+        Hands-on simulations, live market data, and step-by-step tutorials to make you a confident trader—without risking a dime.
+      </p>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 justify-center lg:justify-start">
+        <a
+          href="/signup"
+          class="group relative inline-block overflow-hidden rounded-md border border-secondary bg-secondary"
+        >
+          <span class="relative z-10 inline-block px-5 py-2 text-white font-semibold transition-transform duration-300 group-hover:-translate-x-full">
+            Get Started Free
+          </span>
+          <span class="absolute inset-0 flex items-center justify-center text-white font-semibold bg-secondary-dark transform -translate-x-full transition-transform duration-300 group-hover:translate-x-0">
+            Signup
+          </span>
+        </a>
+        <div class="text-sm text-gray-400 text-center sm:text-left">
+          ⭐ Rated 4.9/5 on TrustLearn<br />Loved by 500K+ students
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Right panel (charts placeholders) -->
-  <div class="flex-1 grid grid-cols-2 gap-6 mt-12 lg:mt-0">
-    {#each Array(4) as _, i}
-      <div
-        id="chart-container-{i}"
-        class="bg-background-secondary rounded-lg shadow-lg p-4 flex items-center justify-center text-gray-500"
-        style="height: 140px;"
-      >
-        Chart {i + 1}
-      </div>
-    {/each}
-  </div>
-</div>
-<!--
-  {#each numbers as n}
-    <div
-      class="absolute pointer-events-none select-none"
-      style="
-        top: {n.top};
-        left: {n.left};
-        font-size: {n.fontSize};
-        font-weight: {n.fontWeight};
-        color: {n.color};
-        opacity: {scrollY > 0 ? n.opacity : 0};
-        filter: drop-shadow(0 0 10px rgba(0,0,0,0.8)) blur(0.2px);
-        transition: opacity 0.3s ease;
-      "
-    >
-      {n.label}
+    <!-- Right panel (charts) -->
+    <div class="flex-1 grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+      {#each Array(4) as _, i}
+        <div
+          id="chart-container-{i}"
+          class="bg-background-secondary rounded-lg shadow-lg p-2 flex items-center justify-center text-gray-500"
+          style="height: 120px;"
+        >
+          Chart {i + 1}
+        </div>
+      {/each}
     </div>
-  {/each}
--->
+  </div>
 </section>
 
 <!-- Markets Section -->
-<section class="bg-black text-white px-6 py-20">
-  <h2 class="text-3xl font-bold mb-8 text-center">Most Popular on CryptoLearn</h2>
-  <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    {#each popular as item}
-      <div class="bg-zinc-900 rounded-lg p-4 flex flex-col items-start shadow-md">
-        <div class="text-2xl mb-2">{item.icon}</div>
-        <div class="font-semibold text-lg">{item.name}</div>
-        <div class="text-xl mt-1">{item.price}</div>
-        <div class="text-sm mt-1 {item.change.startsWith('-') ? 'text-red-500' : 'text-green-500'}">{item.change}</div>
+<section class="bg-background text-primary-content overflow-hidden ">
+  <div class="px-35 py-12 max-w-6xl mx-auto">
+    <div class="grid grid-cols-2 grid-rows-3 gap-5">
+
+      <!-- Grid cell 0,0: Heading -->
+      <div class="col-start-1 row-start-1 flex items-center justify-center">
+        <h2 class=" text-2xl sm:text-3xl font-bold leading-tighttext-base font-bold text-center">Most Popular</h2>
       </div>
-    {/each}
+
+      <!-- Grid cell 0,1: Crypto with row span 2 -->
+      <div class="col-start-2 row-start-1 row-span-2">
+       <h3 class="text-base font-semibold mb-2 text-center">Crypto</h3>
+        <div class="space-y-1">
+          {#each groupedPopular[0] as item}
+             <div class="flex items-center justify-between p-1.5 bg-primary hover:bg-[var(--color-primary-dark)] transition rounded text-xs">
+              <div class="flex items-center space-x-2">
+                <div class="h-4 w-4 bg-zinc-700 rounded-full flex items-center justify-center text-[10px]">{item.icon}</div>
+                <span class="font-medium">{item.name}</span>
+              </div>
+              <div class="text-right space-x-1">
+                <span class="text-gray-300">{item.ticker}</span>
+                <span class="font-mono">{item.price}</span>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Grid cell 1,0: Forex -->
+      <div class="col-start-1 row-start-2 row-span-2">
+       <h3 class="text-base font-semibold mb-2 text-center">Forex</h3>
+        <div class="space-y-1">
+          {#each groupedPopular[3] as item}
+             <div class="flex items-center justify-between p-1.5 bg-secondary hover:bg-[var(--color-secondary-dark)] transition rounded text-xs">
+              <div class="flex items-center space-x-2">
+                <div class="h-4 w-4 bg-zinc-700 rounded-full flex items-center justify-center text-[10px]">{item.icon}</div>
+                <span class="font-medium">{item.name}</span>
+              </div>
+              <div class="text-right space-x-1">
+                <span class="text-gray-300">{item.ticker}</span>
+                <span class="font-mono">{item.price}</span>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Grid cell 2,0: Stocks -->
+      <div class="col-start-2 row-start-3 row-span-2">
+        <h3 class="text-base font-semibold mb-2 text-center">Stocks</h3>
+       <div class="space-y-1">
+          {#each groupedPopular[1] as item}
+             <div class="flex items-center justify-between p-1.5 bg-secondary hover:bg-[var(--color-secondary-dark)] transition rounded text-xs">
+              <div class="flex items-center space-x-2">
+                <div class="h-4 w-4 bg-zinc-700 rounded-full flex items-center justify-center text-[10px]">{item.icon}</div>
+                <span class="font-medium">{item.name}</span>
+              </div>
+              <div class="text-right space-x-1">
+                <span class="text-gray-300">{item.ticker}</span>
+                <span class="font-mono">{item.price}</span>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Grid cell 2,1: Commodities -->
+      <div class="col-start-1 row-start-4 row-span-2">
+       <h3 class="text-base font-semibold mb-2 text-center">Commodities</h3>
+        <div class="space-y-1">
+          {#each groupedPopular[2] as item}
+            <div class="flex items-center justify-between p-1.5 bg-primary hover:bg-[var(--color-primary-dark)] transition rounded text-xs">
+              <div class="flex items-center space-x-2">
+                <div class="h-4 w-4 bg-zinc-700 rounded-full flex items-center justify-center text-[10px]">{item.icon}</div>
+                <span class="font-medium">{item.name}</span>
+              </div>
+              <div class="text-right space-x-1">
+                <span class="text-gray-300">{item.ticker}</span>
+                <span class="font-mono">{item.price}</span>
+              </div>
+            </div>
+          {/each}
+        </div>
+        </div> 
+        <div class="col-start-2 row-start-5 flex items-center justify-center">
+        <div class="text-s text-[var(--color-copy-lighter)] text-center pb-4">
+            <span class="font-semibold">crypto, stocks, forex, and commodities — all tradeable on cSwift </span>
+        </div>
+
+    </div>
+    </div>
   </div>
 </section>
 
 <!-- FAQ Section -->
-<section class="bg-black text-white px-6 py-20 max-w-4xl mx-auto">
-  <h2 class="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-  <div class="space-y-4">
-    <details class="bg-zinc-900 p-4 rounded-md">
-      <summary class="font-semibold cursor-pointer">What is CryptoLearn?</summary>
-      <p class="mt-2 text-zinc-300">CryptoLearn is a crypto education platform offering real-time practice and tutorials for traders of all levels.</p>
-    </details>
-    <details class="bg-zinc-900 p-4 rounded-md">
-      <summary class="font-semibold cursor-pointer">Is CryptoLearn free?</summary>
-      <p class="mt-2 text-zinc-300">Yes, you can sign up and explore learning resources and simulation tools at no cost.</p>
-    </details>
-    <details class="bg-zinc-900 p-4 rounded-md">
-      <summary class="font-semibold cursor-pointer">Can I trade real crypto?</summary>
-      <p class="mt-2 text-zinc-300">CryptoLearn is for simulation and education. We help you prepare before using real exchanges.</p>
-    </details>
-    <details class="bg-zinc-900 p-4 rounded-md">
-      <summary class="font-semibold cursor-pointer">How do I start?</summary>
-      <p class="mt-2 text-zinc-300">Click on "Sign Up" on the homepage and begin with our guided tutorials and practice features.</p>
-    </details>
+<div class="px-4 py-12">
+  <div class="mx-auto max-w-3xl">
+    <h3 class="mb-4 text-center text-2xl sm:text-3xl font-bold">Frequently asked questions</h3>
+    {#each faqs as faq, index}
+      <div class="border-b border-border">
+        <button
+          on:click={() => faq.open = !faq.open}
+          class="flex w-full items-center justify-between gap-4 py-6"
+        >
+          <span class="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-left text-lg font-medium text-transparent">
+            {faq.title}
+          </span>
+          <span class:rotate-180={faq.open} class="transition-transform duration-300">
+            <ChevronDown class="text-2xl text-copy" />
+          </span>
+        </button>
+        <div class="overflow-hidden transition-all duration-300" style="max-height: {faq.open ? '200px' : '0px'}">
+          <p class="pb-6 text-primary-content">{faq.content}</p>
+        </div>
+      </div>
+    {/each}
   </div>
-</section>
+</div>
+
+<Footer />
+
+<style>
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+</style>

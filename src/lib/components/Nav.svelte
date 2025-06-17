@@ -65,20 +65,20 @@
     {#if currentUser}
       <AccountDropdown />
     {:else}
-      <a href="/login" class="rounded-lg relative w-24 h-8 flex items-center border border-[var(--color-primary)] bg-[var(--color-background)] group overflow-hidden transition-all duration-300">
+      <a href="/login" class="rounded-lg relative w-24 h-8 flex items-center border border-[var(--color-primary)] bg-[var(--color-foreground)] group overflow-hidden transition-all duration-300">
         <span class="text-[var(--color-primary-content)] font-semibold ml-4 transform transition-all duration-300 group-hover:translate-x-12">
           Log In
         </span>
-        <span class="absolute right-0 h-full w-8 flex items-center justify-center bg-[var(--color-background)] transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
+        <span class="absolute right-0 h-full w-8 flex items-center justify-center bg-[var(--color-foreground)] transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
           <LogIn class="w-4 h-4 text-[var(--color-primary-content)]" />
         </span>
       </a>
 
-      <a href="/signup" class="rounded-lg relative w-26 h-8 flex items-center border border-[var(--color-primary)] bg-[var(--color-primary)] group overflow-hidden transition-all duration-300">
+      <a href="/signup" class="rounded-lg relative w-26 h-8 flex items-center border border-[var(--color-secondary)] bg-[var(--color-secondary)] group overflow-hidden transition-all duration-300">
         <span class="text-[var(--color-primary-content)] font-semibold ml-1 p-1 transform transition-all duration-300 group-hover:translate-x-12">
           Sign Up
         </span>
-        <span class="absolute right-0 h-full w-8 flex items-center justify-center bg-[var(--color-primary)] transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
+        <span class="absolute right-0 h-full w-8 flex items-center justify-center bg-[var(--color-secondary)] transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
           <UserPlus class="w-4 h-4 text-[var(--color-primary-content)]" />
         </span>
       </a>
