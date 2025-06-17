@@ -3,6 +3,7 @@
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import LogoButton from './Nav/LogoButton.svelte';
+  import AccountDropdown from './Nav/Dropdown.svelte';
   import { CircleUserRound, LogIn, UserPlus, BarChart2, TrendingUp } from 'lucide-svelte';
 
   let currentUser = null;
@@ -12,6 +13,9 @@
     await supabase.auth.signOut();
     goto('/login');
   }
+
+  import { onDestroy } from 'svelte';
+  onDestroy(unsubscribe);
 </script>
 
 <nav class="bg-[var(--color-background)] text-[var(--color-copy)] p-4 flex items-center justify-between">
@@ -26,20 +30,17 @@
       <TrendingUp class="w-5 h-5" />
       <span>Trading</span>
     </a>
+    <a href="/trading" class="flex items-center space-x-1 px-2 py-1 rounded transition-colors hover:text-[var(--color-primary)]">
+      <TrendingUp class="w-5 h-5" />
+      <span>Leaderboard</span>
+    </a>
   </div>
 
-  <div class="flex items-center space-x-4">
+ <div class="flex items-center space-x-4">
     {#if currentUser}
-      <a href="/user" class="flex items-center space-x-1 px-2 py-1 rounded transition-colors hover:text-[var(--color-primary)]">
-        <CircleUserRound class="w-5 h-5" />
-        <span>My Account</span>
-      </a>
-      <button type="button" on:click={logout} class="flex items-center space-x-1 px-2 py-1 rounded transition-colors hover:text-[var(--color-primary)]">
-        <LogIn class="w-5 h-5 rotate-180" />
-        <span>Log Out</span>
-      </button>
+      <AccountDropdown />
+
     {:else}
-      <!-- Animated Log In Button (Narrower) -->
       <a
         href="/login"
         class="rounded-lg relative w-24 h-8 cursor-pointer flex items-center border border-[var(--color-primary)] bg-[var(--color-background)] group hover:bg-[var(--color-background)] active:bg-[var(--color-background)] active:border-[var(--color-primary)] overflow-hidden"
@@ -55,7 +56,6 @@
         </span>
       </a>
 
-      <!-- Animated Sign Up Button (Narrower) -->
       <a
         href="/signup"
         class="rounded-lg relative w-26 h-8 cursor-pointer flex items-center border border-[var(--color-primary)] bg-[var(--color-primary)] group hover:bg-[var(--color-primary)] active:bg-[var(--color-primary)] active:border-[var(--color-primary)] overflow-hidden"

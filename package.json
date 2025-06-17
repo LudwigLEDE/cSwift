@@ -38,6 +38,7 @@
 		"vitest": "^3.2.3"
 	},
 	"dependencies": {
+		"@motionone/svelte": "^10.16.4",
 		"@supabase/supabase-js": "^2.50.0",
 		"lightweight-charts": "^5.0.7",
 		"lucide-svelte": "^0.516.0",
