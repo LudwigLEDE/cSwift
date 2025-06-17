@@ -1,5 +1,5 @@
 <!-- src/routes/+layout.svelte -->
-<script lang="ts">
+<script lang="js">
   import '../app.css';
   import Nav from '$lib/components/Nav.svelte';
   import { Toaster } from 'svelte-hot-french-toast';
