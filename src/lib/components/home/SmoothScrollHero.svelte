@@ -123,8 +123,8 @@ let faqs = [
       </div>
       <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
         LEARN TO <span class="text-secondary">TRADE</span> WITH
-        <span class="bg-gradient-to-r from-primary-dar to-primary-light
-            bg-clip-text text-transparent">
+        <span class="bg-gradient-to-r from-primary-dark to-primary-light
+             bg-clip-text text-transparent">
             cSwift
         </span>
       </h1>
