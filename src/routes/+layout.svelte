@@ -7,14 +7,10 @@
   import { scrollingDown } from '$lib/stores/scroll';
 </script>
 
-<Toaster position="top-end" />
+<Toaster position="bottom-end" />
 
 <Nav />
 
-<main
-  class="transition-opacity duration-300 ease-in-out"
-  class:opacity-0={$scrollingDown}
-  class:opacity-100={!$scrollingDown}
->
+<main>
   <slot />
 </main>
