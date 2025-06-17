@@ -4,30 +4,33 @@
   import { supabase } from '$lib/supabase';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { CircleUserRound, DownloadCloud, ChevronRight } from 'lucide-svelte';
+  import { CircleUserRound } from 'lucide-svelte';
+	import SmoothScrollHero from '$lib/components/home/SmoothScrollHero.svelte';
 
-  let email = '';
-  let chartData = [];
   let portfolios = [];
+  let totalValue = 0;
+  let chartData = [];
 
-  // Generate dummy chart data and fetch portfolios
-  onMount(async () => {
-    chartData = Array.from({ length: 20 }, () => Math.random() * 100);
-    const { data, error } = await supabase
+  // Fetch portfolios when user logs in
+  $: if ($user?.id) fetchPortfolios($user.id);
+
+  async function fetchPortfolios(userId) {
+    const { data } = await supabase
       .from('portfolios')
-      .select('id,name,value,change')
-      .eq('user_id', $user?.id);
-    if (data) portfolios = data;
-  });
+      .select('name,value')
+      .eq('user_id', userId);
+    portfolios = data || [];
+    totalValue = portfolios.reduce((sum, p) => sum + p.value, 0);
+    chartData = portfolios.map(p => p.value);
+  }
+
+  function handleEmailSignup() {
+    goto('/signup');
+  }
 
   async function logout() {
     await supabase.auth.signOut();
     goto('/login');
-  }
-
-  function handleEmailSignup() {
-    supabase.auth.signUp({ email });
-    goto('/signup');
   }
 </script>
 
@@ -42,31 +45,39 @@
         <div class="text-sm text-[var(--color-copy-light)]">UID: {$user.id}</div>
       </div>
     </div>
+    <button on:click={logout} class="px-4 py-2 bg-[var(--color-background-light)] text-[var(--color-copy)] rounded-lg hover:bg-[var(--color-border)] transition">Log Out</button>
   </section>
 
-  <!-- Estimated Balance Card -->
-  <section class="bg-[var(--color-background-light)] p-6 rounded-lg shadow flex justify-between items-center">
-    <div>
-      <div class="text-sm text-[var(--color-copy-light)]">Estimated Balance</div>
-      <div class="text-3xl font-bold mt-1">0.00052358 <span class="text-sm">BTC</span></div>
-      <div class="text-sm text-[var(--color-copy-light)]">≈ $56.21</div>
-      <div class="text-sm mt-2">Today’s PnL: <span class="text-green-500">+ $0.31 (0.55%)</span></div>
+  <!-- Total Portfolio Value with Chart -->
+  <section class="bg-[var(--color-background-light)] p-6 rounded-lg shadow">
+    <div class="mb-4">
+      <div class="text-sm text-[var(--color-copy-light)]">Total Portfolio Value</div>
+      <div class="text-3xl font-bold mt-1">${totalValue.toFixed(2)}</div>
     </div>
-    <div class="flex flex-col items-end space-y-4">
-      <div class="space-x-2">
-        <button class="px-3 py-1 bg-[var(--color-border)] rounded-lg hover:bg-[var(--color-copy-light)] transition">Deposit</button>
-        <button class="px-3 py-1 bg-[var(--color-border)] rounded-lg hover:bg-[var(--color-copy-light)] transition">Withdraw</button>
-        <button class="px-3 py-1 bg-[var(--color-border)] rounded-lg hover:bg-[var(--color-copy-light)] transition">Cash In</button>
-      </div>
-      <div class="w-40 h-16 bg-gradient-to-b from-[var(--color-primary)] to-transparent rounded"></div>
-    </div>
+    <svg width="100%" height="100" class="overflow-visible">
+      <polyline
+        fill="none"
+        stroke="var(--color-primary)"
+        stroke-width="2"
+        points={
+          chartData.length > 1
+            ? chartData.map((v, i) => {
+                const x = (i / (chartData.length - 1)) * 100;
+                const max = Math.max(...chartData);
+                const y = 100 - (v / max) * 100;
+                return `${x},${y}`;
+              }).join(' ')
+            : ''
+        }
+      />
+    </svg>
   </section>
 
-  <!-- Portfolios Table -->
+  <!-- Portfolios List -->
   <section class="bg-[var(--color-background-light)] p-6 rounded-lg shadow">
     <header class="flex justify-between items-center mb-4">
       <h3 class="text-xl font-semibold">Your Portfolios</h3>
-      <a href="/portfolios" class="text-sm hover:text-[var(--color-primary)]">View All →</a>
+      <a href="/portfolios" class="text-sm hover:text-[var(--color-primary)]">Manage →</a>
     </header>
     <div class="overflow-x-auto">
       <table class="w-full text-left">
@@ -74,8 +85,6 @@
           <tr class="text-[var(--color-copy-light)] text-sm">
             <th class="pb-2">Name</th>
             <th class="pb-2">Value</th>
-            <th class="pb-2">Change (%)</th>
-            <th class="pb-2">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-[var(--color-border)]">
@@ -83,10 +92,6 @@
             <tr>
               <td class="py-3 text-sm">{p.name}</td>
               <td class="py-3 text-sm">${p.value.toFixed(2)}</td>
-              <td class="py-3 text-sm {p.change >= 0 ? 'text-green-500' : 'text-red-500'}">{p.change.toFixed(2)}%</td>
-              <td class="py-3">
-                <button type="button" class="text-[var(--color-primary)] hover:underline">View</button>
-              </td>
             </tr>
           {/each}
         </tbody>
@@ -97,58 +102,8 @@
 {:else}
 <main class="bg-[var(--color-background)] text-[var(--color-copy)]">
   <!-- Hero & Sidebar -->
-  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 pt-16 pb-12">
-    <section class="space-y-6 px-4 lg:px-0">
-      <h1 class="text-5xl font-extrabold leading-tight">
-        <span class="text-[var(--color-primary)]">277,469,889</span><br />users trust us to learn & trade crypto
-      </h1>
-      <div class="flex max-w-md">
-        <input
-          type="email"
-          bind:value={email}
-          placeholder="Email or Phone number"
-          class="flex-1 px-4 py-2 rounded-l-lg bg-[var(--color-background-light)] border border-[var(--color-border)] focus:outline-none"
-        />
-        <button
-
-          class="px-6 py-2 rounded-r-lg bg-[var(--color-primary)] text-[var(--color-primary-content)] font-semibold hover:bg-[var(--color-primary-dark)] transition"
-        >Sign Up</button>
-      </div>
-      <div class="flex space-x-4">
-        <button on:click={() => supabase.auth.signInWithOAuth({ provider: 'google' })} class="p-2 bg-[var(--color-background-light)] rounded-lg hover:bg-[var(--color-border)]">G</button>
-        <button on:click={() => supabase.auth.signInWithOAuth({ provider: 'apple' })} class="p-2 bg-[var(--color-background-light)] rounded-lg hover:bg-[var(--color-border)]"></button>
-        <button class="p-2 bg-[var(--color-background-light)] rounded-lg hover:bg-[var(--color-border)]"><DownloadCloud /></button>
-      </div>
-    </section>
-    <aside class="space-y-8 px-4 lg:px-0">
-      <!-- Popular Section -->
-      <div class="bg-[var(--color-background-light)] p-4 rounded-lg shadow">
-        <header class="flex justify-between items-center mb-4">
-          <h2 class="font-semibold">Popular</h2>
-          <a href="/coins" class="text-sm hover:underline">View All 350+ →</a>
-        </header>
-        <ul class="space-y-2">
-          <li class="flex justify-between"><span>BTC Bitcoin</span><span>$107,388.38 <span class="text-green-500">+1.06%</span></span></li>
-          <li class="flex justify-between"><span>ETH Ethereum</span><span>$2,591.21 <span class="text-green-500">+0.67%</span></span></li>
-          <li class="flex justify-between"><span>BNB BNB</span><span>$655.43 <span class="text-green-500">+0.45%</span></span></li>
-          <li class="flex justify-between"><span>XRP XRP</span><span>$2.24 <span class="text-green-500">+2.59%</span></span></li>
-          <li class="flex justify-between"><span>SOL Solana</span><span>$152.66 <span class="text-red-500">-2.71%</span></span></li>
-        </ul>
-      </div>
-      <!-- News Section -->
-      <div class="bg-[var(--color-background-light)] p-4 rounded-lg shadow">
-        <header class="flex justify-between items-center mb-4">
-          <h2 class="font-semibold">News</h2>
-          <a href="/news" class="text-sm hover:underline">View All →</a>
-        </header>
-        <ul class="space-y-2 text-sm">
-          <li>OpenAI secures $200M U.S. defense contract for AI pilot program</li>
-          <li>Crypto exchange fundamentals: what every trader should know</li>
-          <li>Understanding order books and trade execution</li>
-          <li>Top learning resources for crypto beginners</li>
-        </ul>
-      </div>
-    </aside>
+  <div class="">
+      <SmoothScrollHero />
   </div>
 </main>
 {/if}

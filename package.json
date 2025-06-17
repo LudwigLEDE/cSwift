@@ -39,10 +39,13 @@
 	},
 	"dependencies": {
 		"@motionone/svelte": "^10.16.4",
+		"@studio-freight/lenis": "^1.0.42",
 		"@supabase/supabase-js": "^2.50.0",
+		"layerchart": "^1.0.11",
 		"lightweight-charts": "^5.0.7",
 		"lucide-svelte": "^0.516.0",
 		"svelte-5-french-toast": "^2.0.4",
+		"svelte-apexcharts": "^1.0.2",
 		"svelte-hot-french-toast": "^2.0.0",
 		"technicalindicators": "^3.1.0"
 	}

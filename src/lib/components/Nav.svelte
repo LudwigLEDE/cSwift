@@ -29,7 +29,7 @@
   }
 </script>
 
-<nav class="sticky top-0 z-50 bg-[var(--color-background)] text-[var(--color-copy)] p-4 flex items-center justify-between">
+<nav class="sticky top-0 z-50 bg-[var(--color-foreground)] text-[var(--color-copy)] p-4 flex items-center justify-between">
   <!-- Left Links: fade when scrolling down -->
   <div class="flex items-center transition-opacity duration-300" class:opacity-0={$scrollingDown}>
     <LogoButton />
