@@ -36,7 +36,7 @@
     <div class="mx-4 h-6 w-px bg-[var(--color-border)]"></div>
     <a href="/dashboard" class="flex items-center space-x-1 px-2 py-1 rounded transition-colors hover:text-[var(--color-primary)]">
       <BarChart2 class="w-5 h-5" />
-      <span>Portfolio</span>
+      <span>Portfolios</span>
     </a>
     <a href="/trading" class="flex items-center space-x-1 px-2 py-1 rounded transition-colors hover:text-[var(--color-primary)]">
       <TrendingUp class="w-5 h-5" />

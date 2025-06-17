@@ -13,7 +13,7 @@
     <span
       class="ml-2 text-lg font-bold opacity-0 transform transition duration-300
              group-hover:opacity-1000 group-hover:translate-x-2
-             bg-gradient-to-r from-primary-dar to-primary-light
+             bg-gradient-to-r from-primary-dark to-primary-light
              bg-clip-text text-transparent"
     >
       cSwift
