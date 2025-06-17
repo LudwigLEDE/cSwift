@@ -1,17 +1,20 @@
+<!-- src/routes/+layout.svelte -->
 <script lang="ts">
   import '../app.css';
   import Nav from '$lib/components/Nav.svelte';
-
-  // use a Svelte-5–compatible fork + vendor its CSS
   import { Toaster } from 'svelte-hot-french-toast';
   import '$lib/toast.css';
+  import { scrollingDown } from '$lib/stores/scroll';
 </script>
 
-<!-- mount the toaster once, at the top level -->
 <Toaster position="top-end" />
 
-<!-- your nav bar -->
 <Nav />
 
-<!-- this is the new way to render page content in SvelteKit -->
-<slot />
+<main
+  class="transition-opacity duration-300 ease-in-out"
+  class:opacity-0={$scrollingDown}
+  class:opacity-100={!$scrollingDown}
+>
+  <slot />
+</main>
